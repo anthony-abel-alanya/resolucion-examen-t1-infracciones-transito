@@ -1,4 +1,4 @@
-name: CI - Pruebas
+name: Pruebas-test
 on:
   push:
     branches:
