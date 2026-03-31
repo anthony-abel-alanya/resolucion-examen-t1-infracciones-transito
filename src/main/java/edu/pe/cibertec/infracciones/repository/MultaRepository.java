@@ -3,6 +3,8 @@ package edu.pe.cibertec.infracciones.repository;
 import edu.pe.cibertec.infracciones.model.EstadoMulta;
 import edu.pe.cibertec.infracciones.model.Multa;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MultaRepository extends JpaRepository<Multa, Long> {
@@ -10,6 +12,7 @@ public interface MultaRepository extends JpaRepository<Multa, Long> {
     List<Multa> findByVehiculo_Id(Long vehiculoId);
     List<Multa> findByInfractor_IdAndEstado(Long infractorId, EstadoMulta estado);
     List<Multa> findByVehiculo_IdAndEstado(Long vehiculoId, EstadoMulta estado);
+    List<Multa> findByEstadoAndFechaVencimientoBefore(EstadoMulta estado, LocalDate fecha);
     boolean existsByCodigo(String codigo);
     long countByInfractor_IdAndEstado(Long infractorId, EstadoMulta estado);
 }
