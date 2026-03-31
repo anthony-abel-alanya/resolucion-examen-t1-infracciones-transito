@@ -1,5 +1,6 @@
 name: CI - Ejecutar Pruebas
 
+# Se ejecuta en push y pull request hacia main
 on:
   push:
     branches:
@@ -14,9 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Clonar el repositorio
       - name: Checkout del código fuente
         uses: actions/checkout@v4
 
+      # Configurar Java 21 con cache de Maven
       - name: Configurar Java 21
         uses: actions/setup-java@v4
         with:
@@ -24,9 +27,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # Ejecutar pruebas de Maven
       - name: Ejecutar pruebas con Maven
         run: mvn test --no-transfer-progress
 
+      # Publicar reportes de pruebas (artifact)
       - name: Publicar reporte de pruebas (Surefire)
         if: always()
         uses: actions/upload-artifact@v4
