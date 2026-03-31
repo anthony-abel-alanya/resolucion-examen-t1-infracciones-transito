@@ -1,5 +1,4 @@
-name: CI - Ejecutar Pruebas
-
+name: CI - Pruebas
 on:
   push:
     branches:
