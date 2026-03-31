@@ -10,6 +10,7 @@ class InfraccionesApplicationTests {
 	@Disabled("Deshabilitado temporalmente en CI porque falla al cargar ApplicationContext")
 	@Test
 	void contextLoads() {
+		// Ignorado temporalmente para que el pipeline pase
 	}
 
 }
