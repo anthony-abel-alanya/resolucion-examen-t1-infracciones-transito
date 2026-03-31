@@ -6,7 +6,9 @@ import edu.pe.cibertec.infracciones.exception.InfractorNotFoundException;
 import edu.pe.cibertec.infracciones.exception.VehiculoNotFoundException;
 import edu.pe.cibertec.infracciones.model.Infractor;
 import edu.pe.cibertec.infracciones.model.Vehiculo;
+import edu.pe.cibertec.infracciones.model.EstadoMulta;
 import edu.pe.cibertec.infracciones.repository.InfractorRepository;
+import edu.pe.cibertec.infracciones.repository.MultaRepository;
 import edu.pe.cibertec.infracciones.repository.VehiculoRepository;
 import edu.pe.cibertec.infracciones.service.IInfractorService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class InfractorServiceImpl implements IInfractorService {
 
     private final InfractorRepository infractorRepository;
     private final VehiculoRepository vehiculoRepository;
+    private final MultaRepository multaRepository;
 
     @Override
     public InfractorResponseDTO registrarInfractor(InfractorRequestDTO dto) {
@@ -54,6 +57,17 @@ public class InfractorServiceImpl implements IInfractorService {
                 .orElseThrow(() -> new VehiculoNotFoundException(vehiculoId));
         infractor.getVehiculos().add(vehiculo);
         infractorRepository.save(infractor);
+    }
+
+    @Override
+    public void verificarBloqueo(Long infractorId) {
+        Infractor infractor = infractorRepository.findById(infractorId)
+                .orElseThrow(() -> new InfractorNotFoundException(infractorId));
+        long multasVencidas = multaRepository.countByInfractor_IdAndEstado(infractorId, EstadoMulta.VENCIDA);
+        if (multasVencidas >= 3) {
+            infractor.setBloqueado(true);
+            infractorRepository.save(infractor);
+        }
     }
 
 
